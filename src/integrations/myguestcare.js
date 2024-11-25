@@ -1,3 +1,5 @@
+const STORAGE_KEY = 'clockify_defaults';
+
 (async () => {
 	clockifyButton.render(
 		'.navbar-top-name',
