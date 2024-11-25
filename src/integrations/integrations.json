@@ -211,7 +211,7 @@
 	},
 	"tasks.office.com": {
 		"name": "Microsoft Planner",
-		"link": "*://tasks.office.com/*",
+		"link": "*://tasks.office.com/*,*://planner.cloud.microsoft/*",
 		"script": "microsoft-planner.js"
 	},
 	"miro.com": {
@@ -289,6 +289,11 @@
 		"link": "*://*.pipedrive.com/*",
 		"script": "pipedrive.js"
 	},
+	"placker.com": {
+		"name": "Placker",
+		"link": "*://*.placker.com/*,*://placker.com/*",
+		"script": "placker.js"
+	},
 	"plaky.com": {
 		"name": "Plaky",
 		"link": "*://*.plaky.com/*",
@@ -298,6 +303,11 @@
 		"name": "Plutio",
 		"link": "*://*.plutio.com/*",
 		"script": "plutio.js"
+	},
+	"pyrus.com": {
+		"name": "Pyrus",
+		"link": "*://pyrus.com/*",
+		"script": "pyrus.js"
 	},
 	"redbooth.com": {
 		"name": "Redbooth",

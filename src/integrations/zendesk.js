@@ -1,53 +1,54 @@
-setTimeout(() => {
+(async () => {
+	const { singleTicketView, singleTicketViewNewUi } = await getSelectors('zendesk');
+
+	// Single ticket view (old UI, we can propbably delete this render)
 	clockifyButton.render(
-		'.pane_header:not(.clockify)',
-		{ observe: true },
-		function (elem) {
-			let description;
-			const projectName = $('title').textContent;
+		singleTicketView.hanger,
+		{ observe: true, onNavigationRerender: true },
+		navBar => {
+			const ticketNumber = () => location.href.match(/tickets\/(\d+)/)[1];
+			const ticketSubject = () => value(singleTicketView.ticketSubject);
 
-			const titleFunc = function () {
-				const titleElem = $('.editable .ember-view input', elem);
-				const ticketNum = location.href.match(/tickets\/(\d+)/);
+			const description = () => `#${ticketNumber()} ${ticketSubject()}`;
+			const tagNames = () => textList(singleTicketView.ticketTags);
 
-				if (titleElem !== null) {
-					description = titleElem.value.trim();
-				}
+			const timer = clockifyButton.createTimer({ description, tagNames });
+			const input = clockifyButton.createInput({ description, tagNames });
 
-				if (ticketNum) {
-					description = '#' + ticketNum[1].trim() + ' ' + description;
-				}
-				return description;
-			};
+			const container = createContainer(timer, input);
 
-			const link = clockifyButton.createButton(
-				titleFunc,
-				projectName && projectName.split(' - ').shift()
-			);
-
-			if (elem.querySelector('#clockifyButton')) {
-				elem.removeChild(elem.querySelector('#clockifyButton'));
-			}
-
-			elem.insertBefore(link, elem.querySelector('.btn-group'));
+			navBar.append(container);
 		}
 	);
-}, 1000);
 
-setTimeout(() => {
+	// Single ticket view (new UI)
 	clockifyButton.render(
-		'input[data-test-id="omni-header-subject"]:not(.clockify)',
-		{ observe: true },
-		(elem) => {
-			const ticketNum = location.href.match(/tickets\/(\d+)/);
-			const description = ticketNum
-				? '#' + ticketNum[1].trim() + ' ' + elem.value.trim()
-				: elem.value.trim();
+		'[aria-label="Ticket page location"]:not(.clockify)',
+		{ observe: true, onNavigationRerender: true },
+		navBar => {
+			const ticketNumber = () => location.href.match(/tickets\/(\d+)/)[1];
+			const ticketSubject = () => value(singleTicketViewNewUi.ticketSubject);
 
-			const link = clockifyButton.createButton(description);
+			const description = () => `#${ticketNumber()} ${ticketSubject()}`;
+			const tagNames = () => textList(singleTicketViewNewUi.ticketTags);
 
-			elem.parentElement.prepend(link);
-			clockifyButton.disconnectObserver();
+			const timer = clockifyButton.createTimer({ description, tagNames });
+			const input = clockifyButton.createInput({ description, tagNames });
+
+			const container = createContainer(timer, input);
+
+			navBar.append(container);
 		}
 	);
-}, 1000);
+})();
+
+applyStyles(`
+	.clockify-widget-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 28px;
+		width: 260px; 
+		padding-left: 30px;
+	}
+`);

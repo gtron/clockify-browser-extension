@@ -50,7 +50,8 @@
 	display: inline-block;
 	width: 32px;
 	height: 32px;
-	border-radius: 16px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-settings span:last-child {
@@ -61,11 +62,11 @@
 }
 
 .app-version {
-	position: absolute;
-	margin: 20px;
+	position: relative;
+	padding: 20px;
 	bottom: 0;
-	right: 0;
-	color: variables.$dark_text;
+	left: 240px;
+	color: #333333;
 	font-size: 12px;
 }
 
